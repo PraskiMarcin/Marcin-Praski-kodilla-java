@@ -14,16 +14,17 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.time.Period;
+
 
 public class StreamMain {
 
     public static void main(String[] args) {
 
         Forum forum = new Forum();
-        int requiredAge = LocalDate.now().getYear() - 20;
         Map<Integer, ForumUser> theResultMapOfFormUser = forum.getUserList().stream()
                 .filter(user -> user.getSex() == 'M')
-                .filter(user -> user.getDateOfBirth().getYear() <= requiredAge)
+                .filter(user->Period.between(user.getDateOfBirth(), LocalDate.now()).getYears()>=20)
                 .filter(user -> user.getNumberOfPostsPublished() >= 1)
                 .collect(Collectors.toMap(ForumUser::getId, user -> user));
 
